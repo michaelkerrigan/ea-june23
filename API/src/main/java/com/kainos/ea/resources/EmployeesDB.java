@@ -23,7 +23,7 @@ public class EmployeesDB {
 
         try {
             FileInputStream propsStream =
-                    new FileInputStream("employeesdb.properties");
+                    new FileInputStream("API/employeesdb.properties");
 
             Properties props = new Properties();
             props.load(propsStream);
