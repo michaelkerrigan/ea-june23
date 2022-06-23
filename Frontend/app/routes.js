@@ -53,7 +53,13 @@ router.use(cookieParser());
 // });
 
 router.get('/employees', async (req, res) => {
-  res.render('employeesView', { employees: await employeeData.getEmployees() }); 
+    if (req.cookies.Role === "HR"){
+        res.render('employeesView', { employees: await employeeData.getEmployees() });
+    } else {
+        res.locals.errormessage = "Please sign in to a HR account";
+        res.render("login");
+    }
+
 });
 
 router.get('/create-employee', function (req, res) {
