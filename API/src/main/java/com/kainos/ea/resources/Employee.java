@@ -3,10 +3,13 @@ package com.kainos.ea.resources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Base64;
+
 import javax.ws.rs.GET;
 
 public class Employee {
 
+    // CONSTRUCTORS
     public Employee(String name, String dept){
         this.name = name;
         this.dept = dept;
@@ -18,55 +21,47 @@ public class Employee {
         this.salary = salary;
         this.bank_num = bank_num;
     }
+    public Employee(String name, String address, String nin, float salary, String bank_num, String dept) {
+        this.name = name;
+        this.address = address;
+        this.nin = nin;
+        this.salary = salary;
+        this.bank_num = bank_num;
+        this.dept = dept;
+    }
+    public Employee(int id, String name, String address, String nin, float salary, String bank_num, String dept) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.nin = nin;
+        this.salary = salary;
+        this.bank_num = bank_num;
+        this.dept = dept;
+    }
 
+    // VARIABLES
+    private int id;
     private String name;
     private String address;
     private String nin;
+    private float salary;
+    private String bank_num;
+    private String dept;
 
-//    public int getSalesID() {
-//        return SalesID;
-//    }
-//
-//    public void setSalesID(int salesID) {
-//        SalesID = salesID;
-//    }
-//
-//    private int SalesID;
-//
-//    private float CommRate;
-//
-//    public float getCommRate() {
-//        return CommRate;
-//    }
-//
-//    public void setCommRate(float commRate) {
-//        CommRate = commRate;
-//    }
-//
-//    private int SalesTotal;
-//
-//    public int getSalesTotal() {
-//        return SalesTotal;
-//    }
-//
-//    public void setSalesTotal(int salesTotal) {
-//        SalesTotal = salesTotal;
-//    }
+    // GETTER AND SETTERS
+    public int getId() { return id; }
+    public void setId(int newid){ this.id=newid; }
 
     public String getDept() {
         return dept;
     }
-
     public void setDept(String dept) {
         this.dept = dept;
     }
 
-    private String dept;
-
     public String getBank_num() {
         return bank_num;
     }
-
     public void setBank_num(String bank_num) {
         this.bank_num = bank_num;
     }
@@ -74,39 +69,28 @@ public class Employee {
     public float getSalary() {
         return salary;
     }
-
     public void setSalary(float salary) {
         this.salary = salary;
     }
 
-    private float salary;
-
-
-
-    private String bank_num;
-
     public String getNin() {
         return nin;
     }
-
     public void setNin(String nin) {
         this.nin = nin;
     }
 
-
-
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
 
-
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    // JSON OBJECT
     @JsonCreator
     public Employee(@JsonProperty("name") String name,
                     @JsonProperty("address") String address,
@@ -122,22 +106,22 @@ public class Employee {
         this.setSalary(salary);
     }
 
-//    @JsonCreator
-//    public Employee(@JsonProperty("SalesID") int id,
-//                    @JsonProperty("CommissionRate") float CommRate,
-//                    @JsonProperty("SalesTotal") int total
-//    )
-//    {
-//        this.setSalesID(id);
-//        this.setCommRate(CommRate);
-//        this.setSalesTotal(total);
-//    }
+    // OTHER METHODS
 
-    public String toString(){
-        return this.name + ": " + this.dept;
+    public float calcPay(){
+        double pay = Math.round((salary/12) * 100.0) / 100.0;
+        return (float)pay;
     }
 
 
+    public String toString(){
+        return "Employee: "
+                + this.getName() + ", "
+                + this.getAddress() + ", £"
+                + this.getSalary() + ", "
+                + this.getNin() + ", "
+                + this.getBank_num();
+    }
 
 
 

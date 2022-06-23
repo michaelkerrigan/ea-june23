@@ -28,62 +28,99 @@ public class WebService {
 //    }
 
     @GET
-    @Path("/print/db")
+    @Path("/employees")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getEMP()throws SQLException {
+    public List<Employee> getEmployees()throws SQLException {
         try {
-            return "Here are the employees: " + EmployeesDB.getEmployees();
+            return EmployeesDB.getEmployees();
         } catch (SQLException e) {
-            return "Error: " + e;
+            return null;
         }
     }
+
+
+    @GET
+    @Path("/employees/{empid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Employee getEmployeeByID(@PathParam("empid") int id) throws SQLException {
+        try {
+            return EmployeesDB.getEmployeeByID(id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
     @POST
-    @Path("/add")
+    @Path("/employee")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String addEMP(Employee employee)throws SQLException {
+    public int addEmployee(Employee employee) throws SQLException {
         try {
-        EmployeesDB eb = new EmployeesDB();
-        eb.insertEmployee(employee);
+            EmployeesDB eb = new EmployeesDB();
+            int id = eb.insertEmployee(employee);
 
-            return String.format("Here is the new employee: " + employee.getName()
-                    + ' ' + employee.getAddress()
-                    + ' ' + employee.getNin()
-                    + ' ' + employee.getBank_num()
-                    + ' ' + employee.getSalary());
+            return id;
         } catch (SQLException e) {
-            return "Error: "+ e.getMessage();
+            System.out.println(e.getMessage());
+            return -1;
         }
     }
 
-//    @POST
-//    @Path("/add_sales_emp")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String addSalesEMP(Employee employee)throws SQLException {
-//        try {
-//            EmployeesDB eb = new EmployeesDB();
-//            eb.insertSalesEmployee(employee);
-//
-//            return String.format("Here is the new employee: " + employee.getName()
-//                    + ' ' + employee.getAddress()
-//                    + ' ' + employee.getNin()
-//                    + ' ' + employee.getBank_num()
-//                    + ' ' + employee.getSalary());
-//        } catch (SQLException e) {
-//            return "Error: "+ e.getMessage();
-//        }
-//    }
+    @POST
+    @Path("/sales_employee")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int addSalesEmployee(SalesEmployee employee) throws SQLException {
+        try {
+            EmployeesDB eb = new EmployeesDB();
+            int id = eb.insertSalesEmployee(employee);
+            return id;
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: "+ e.getMessage());
+            return -1;
+        }
+    }
 
+    @POST
+    @Path("/user")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int addUser(User user) throws SQLException {
+        try {
+            EmployeesDB eb = new EmployeesDB();
+            int id = eb.insertUser(user);
 
-//    @GET
-//    @Path("/employee_department")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getEMP_by_dep()throws SQLException{
-//
-//
-//    }
+            return id;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
 
+    @GET
+    @Path("/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> getUsers()throws SQLException {
+        try {
+            return EmployeesDB.getUsers();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    @POST
+    @Path("/verify-user")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public User verifyUser(User user) throws SQLException {
+        try {
+            EmployeesDB eb = new EmployeesDB();
+            User result = eb.verifyUser(user);
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 
 
 }

@@ -5,9 +5,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 public class EmployeesDB {
+
+    // VARIABLES
     private static Connection conn;
 
+    // CONNECTION
     private static Connection getConnection() {
         String user;
         String password;
@@ -43,74 +47,25 @@ public class EmployeesDB {
         return null;
     }
 
-//    public static List<Employee> getEmployees() throws SQLException {
-//        Connection c = getConnection();
-//
-//        Statement st = c.createStatement();
-//
-//        ResultSet rs = st.executeQuery(
-//                "SELECT * "
-//                        + "FROM Sales_Employees;");
-//
-//        List<Employee> employees = new ArrayList<>();
-//
-//        while (rs.next()) {
-//            Employee employee = new Employee(
-//                    rs.getShort("EmployeeID"),
-//                    rs.getString("Name"),
-//                    rs.getInt("Salary")
-//            );
-//
-//            employees.add(employee);
-//        }
-//        return employees;
-//    }
-
-
-//    public static List<Employee> getEmployees() throws SQLException {
-//        Connection c = getConnection();
-//
-//        Statement st = c.createStatement();
-//
-//        ResultSet rs = st.executeQuery(
-//                "SELECT * "
-//                        + "FROM Employee order by Department;");
-//        List<Employee> employees = new ArrayList<>();
-//        while (rs.next()) {
-//            Employee employee = new Employee(
-//                    rs.getString("Name"),
-//                    rs.getString("Department")
-//            );
-//
-//            employees.add(employee);
-//        }
-//
-//            //List.add(rs);
-//
-////  List.add(rs.getShort("EmployeeID"));
-////            List.add(rs.getString("Name"));
-////            List.add(rs.getString("Department"));
-//
-//
-//
-//        return employees;
-//    }
-
+    // GET METHODS
     public static List<Employee> getEmployees() throws SQLException {
         Connection c = getConnection();
 
         Statement st = c.createStatement();
-
         ResultSet rs = st.executeQuery(
-                "SELECT * " + "FROM Employee order by Department;");
+                "SELECT * " + "FROM Employee;");
 
         List<Employee> employees = new ArrayList<>();
 
         while (rs.next()) {
             Employee employee = new Employee(
-           rs.getString("Name"),
+                    rs.getInt("EmployeeID"),
+                    rs.getString("Name"),
+                    rs.getString("Address"),
+                    rs.getString("NIN"),
+                    rs.getFloat("Salary"),
+                    rs.getString("BankAccount"),
                     rs.getString("Department")
-//            );
             );
 
             employees.add(employee);
@@ -118,26 +73,62 @@ public class EmployeesDB {
         return employees;
     }
 
-//    public static add addEmployee() throws SQLException{
-//        Connection c = getConnection();
-//
-//        Statement st = c.createStatement();
-//
-//        ResultSet rs = st.executeQuery(
-//                "INSERT INTO "
-//                        + "FROM delivery_employee;");
-//        ArrayList<Object> List = new ArrayList<>();
-//        while (rs.next()) {
-//            List.add(rs.getShort("EmployeeID"));
-//            List.add(rs.getString("Name"));
-//            List.add(rs.getInt("Salary"));
-//
-//        }
-//
-//        return List;
-//
-//    }
+    public static Employee getEmployeeByID(int empid) throws SQLException {
+        Connection c = getConnection();
 
+        String query = "SELECT * FROM Employee WHERE EmployeeID = ?";
+        PreparedStatement preparedStmt = c.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        preparedStmt.setInt(1, empid);
+
+        ResultSet rs = preparedStmt.executeQuery();
+
+        List<Employee> employees = new ArrayList<>();
+
+        while (rs.next()) {
+            Employee employee = new Employee(
+                    rs.getString("Name"),
+                    rs.getString("Address"),
+                    rs.getString("NIN"),
+                    rs.getFloat("Salary"),
+                    rs.getString("BankAccount"),
+                    rs.getString("Department")
+
+            );
+
+            employees.add(employee);
+
+        }
+
+        if (employees.isEmpty()){
+            return null;
+        } else {
+            return employees.get(0);
+        }
+
+    }
+
+    public static List<User> getUsers() throws SQLException {
+        Connection c = getConnection();
+
+        Statement st = c.createStatement();
+        ResultSet rs = st.executeQuery(
+                "SELECT * " + "FROM User;");
+
+        List<User> users = new ArrayList<>();
+
+        while (rs.next()) {
+            User user = new User(
+                    rs.getString("Username"),
+                    rs.getString("Password"),
+                    rs.getString("Role")
+            );
+
+            users.add(user);
+        }
+        return users;
+    }
+
+    // INSERT METHODS
     public int insertEmployee(Employee employee) throws SQLException {
 
         Connection c = getConnection();
@@ -151,13 +142,10 @@ public class EmployeesDB {
         preparedStmt.setString(4, employee.getBank_num());
         preparedStmt.setFloat(5, employee.getSalary());
 
-
         int affectedRows = preparedStmt.executeUpdate();
-
         if (affectedRows == 0) {
-            throw new SQLException("Creating user failed, no rows affected.");
+            throw new SQLException("Creating employee failed, no rows affected.");
         }
-
         int empNo = 0;
 
         try (ResultSet rs = preparedStmt.getGeneratedKeys()) {
@@ -169,33 +157,89 @@ public class EmployeesDB {
         return empNo;
     }
 
-//    public int insertSalesEmployee(Employee employee) throws SQLException {
-//
-//        int empid = insertEmployee(employee);
-//
-//        Connection c = getConnection();
-//        String insertEmployeeQuery = "insert into Sales_Employee (SalesID, CommissionRate, SalesTotal)"
-//                + " values (?, ?, ?)";
-//
-//        PreparedStatement preparedStmt = c.prepareStatement(insertEmployeeQuery, Statement.RETURN_GENERATED_KEYS);
-//        preparedStmt.setInt(1, empid);
-//        preparedStmt.setFloat(2, employee.getCommRate());
-//        preparedStmt.setInt(3, employee.getSalesTotal());
-//
-//        int affectedRows = preparedStmt.executeUpdate();
-//        if (affectedRows == 0) {
-//            throw new SQLException("Creating user failed, no rows affected.");
-//        }
-//
-//        int empNo = 0;
-//        try (ResultSet rs = preparedStmt.getGeneratedKeys()) {
-//            if (rs.next()) {
-//                empNo = rs.getInt(1);
-//            }
-//        }
-//
-//        return empNo;
-//    }
+    public int insertSalesEmployee(SalesEmployee employee) throws SQLException {
+
+        int empid = insertEmployee(employee);
+
+        // CREATE ROW IN SALES EMPLOYEE TABLE
+        Connection c = getConnection();
+        String insertEmployeeQuery = "insert into Sales_Employee (SalesID, CommissionRate, SalesTotal)"
+                + " values (?, ?, ?)";
+
+        PreparedStatement preparedStmt = c.prepareStatement(insertEmployeeQuery, Statement.RETURN_GENERATED_KEYS);
+        preparedStmt.setInt(1, empid);
+        preparedStmt.setFloat(2, employee.getCommRate());
+        preparedStmt.setInt(3, employee.getSalesTotal());
+
+        int affectedRows = preparedStmt.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("Creating user failed, no rows affected.");
+        }
+
+        // UPDATE DEPARTMENT OF EMPLOYEE
+
+        String updateQuery = "UPDATE Employee SET Department = ? WHERE EmployeeID = ?";
+        PreparedStatement ps = c.prepareStatement(updateQuery, Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, "Sales");
+        ps.setInt(2, empid);
+
+        int affectedRows2 = ps.executeUpdate();
+        if (affectedRows2 == 0) {
+            throw new SQLException("Creating sales user failed, no rows affected.");
+        }
+
+        return empid;
+
+    }
+
+    public int insertUser(User user) throws SQLException {
+
+        Connection c = getConnection();
+        String insertUserQuery = "insert into User (Username, Password, Role)"
+                + " values (?, ?, ?)";
+
+        PreparedStatement preparedStmt = c.prepareStatement(insertUserQuery, Statement.RETURN_GENERATED_KEYS);
+        preparedStmt.setString(1, user.getUsername());
+        preparedStmt.setString(2, user.getPassword());
+        preparedStmt.setString(3, user.getRole());
+
+        int affectedRows = preparedStmt.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("Creating user failed, no rows affected.");
+        }
+        int userNo = 0;
+
+        try (ResultSet rs = preparedStmt.getGeneratedKeys()) {
+            if (rs.next()) {
+                userNo = rs.getInt(1);
+            }
+        }
+
+        return userNo;
+    }
+
+    public User verifyUser(User loginUser) throws SQLException {
+
+        Connection c = getConnection();
+        String getUserQuery = "select * from User where Username = ?";
+
+        PreparedStatement preparedStmt = c.prepareStatement(getUserQuery, Statement.RETURN_GENERATED_KEYS);
+        preparedStmt.setString(1, loginUser.getUsername());
+
+        ResultSet rs = preparedStmt.executeQuery();
+
+        while (rs.next()) {
+            if (loginUser.getPassword().equals(rs.getString("Password"))){
+                User user = new User(
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("Role")
+                );
+                return user;
+            };
+        };
+        return null;
+    }
 
 
 
