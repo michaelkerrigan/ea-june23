@@ -45,6 +45,4 @@ public class SalesEmployee extends Employee {
                + this.getCommRate() + ", "
                + this.getSalesTotal();
     }
-
-
 }
