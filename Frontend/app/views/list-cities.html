@@ -1,0 +1,29 @@
+{% extends "layout_unbranded.html" %} 
+{% block pageTitle %} 
+  List of Cities 
+{% endblock %} 
+ 
+{% block content %}
+
+<h2>List of Cities</h2> 
+{% if cities and cities.length > 0 %} 
+    {% set cityrows = [] %} 
+
+    {% for city in cities | contains(namefilter) | sort(attribute='name') %} 
+
+    {% set cityrows = (cityrows.push([{ text: city.id }, {text: city.name }, {text: city.countrycode}, 
+                        {text: city.district}, {text: city.population}]), cityrows) %}
+                        
+
+    {% endfor %} 
+
+    {{govukTable({ 
+        head: [ { text: "ID" },{ text: "Name" },{ text: "Country" }, 
+                { text: "District" },{ text: "Population" } ], 
+        rows: cityrows }) 
+    }} 
+{% else %}
+There are no cities.
+{% endif %}
+
+{% endblock %}

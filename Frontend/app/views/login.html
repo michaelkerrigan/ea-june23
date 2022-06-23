@@ -1,0 +1,42 @@
+{% extends "layout_unbranded.html" %}
+{% block pageTitle %}
+Log In
+{% endblock %}
+
+{% block content %}
+
+<h2>Log In</h2>
+{% if errormessage %}
+<div class="govuk-error-message">{{ errormessage }}</div>
+{% endif %}
+
+<div class="govuk-form-group">
+    <form class="form" action="/login-user" method="post">
+
+        {% from "govuk/components/input/macro.njk" import govukInput %}
+
+        {{ govukInput({
+        label: {
+        text: "Username",
+        classes: "govuk-label--s"
+        },
+        id: "username",
+        name: "username"
+        }) }}
+
+        {{ govukInput({
+        label: {
+        text: "Password",
+        classes: "govuk-label--s"
+        },
+        type: "password",
+        id: "password",
+        name: "password"
+        }) }}
+
+        <br>
+        <button class="govuk-button" data-module="govuk-button">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

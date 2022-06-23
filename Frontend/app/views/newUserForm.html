@@ -1,0 +1,51 @@
+{% extends "layout_unbranded.html" %}
+{% block pageTitle %}
+Register
+{% endblock %}
+
+{% block content %}
+
+<h2>Register</h2>
+{% if errormessage %}
+<div class="govuk-error-message">{{ errormessage }}</div>
+{% endif %}
+
+<div class="govuk-form-group">
+    <form class="form" action="/create-user" method="post">
+
+        {% from "govuk/components/input/macro.njk" import govukInput %}
+
+        {{ govukInput({
+        label: {
+        text: "Username",
+        classes: "govuk-label--s"
+        },
+        id: "username",
+        name: "username"
+        }) }}
+
+        {{ govukInput({
+        label: {
+        text: "Password",
+        classes: "govuk-label--s"
+        },
+        type: "password",
+        id: "password",
+        name: "password"
+        }) }}
+
+        {{ govukInput({
+        label: {
+        text: "Role",
+        classes: "govuk-label--s"
+        },
+        id: "role",
+        name: "role"
+        }) }}
+
+        <br>
+        <button class="govuk-button" data-module="govuk-button">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

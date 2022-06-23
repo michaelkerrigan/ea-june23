@@ -1,0 +1,26 @@
+{% extends "layout_unbranded.html" %}
+{% block pageTitle %} 
+  Add a City 
+{% endblock %} 
+
+{% block content %}
+
+
+{% if errormessage %} 
+<div class="govuk-error-message">{{ errormessage }}</div> 
+{% endif %}
+
+<div class="govuk-form-group">
+<form class="form" action="addcity" method="post">
+
+    <p><label for="id">ID: </label><input type='number' id="id" name="id" value="{{id}}"></p>
+    <p><label for="name">Name: </label><input type='text' id="name" name="name" value="{{name}}"></p>
+    <p><label for="countrycode">Country Code: </label><input type='text' id="countrycode" name="countrycode" value="{{countrycode}}"></p>
+    <p><label for="district">District: </label><input type='text' id="district" name="district" value="{{district}}"></p>
+    <p><label for="population">Population: </label><input type='number' id="population" name="population" value="{{population}}"></p>
+
+    <p><input type="submit" value="Submit"></p>
+</form>
+</div>
+
+{% endblock %}

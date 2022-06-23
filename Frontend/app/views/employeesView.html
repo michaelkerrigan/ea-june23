@@ -1,0 +1,29 @@
+{% extends "layout_unbranded.html" %} 
+{% block pageTitle %} 
+  List of Employees
+{% endblock %} 
+ 
+{% block content %}
+
+<h2>List of Employees</h2> 
+{% if employees and employees.length > 0 %} 
+    {% set emprows = [] %} 
+
+    {% for emp in employees | sort(attribute='dept') %} 
+
+    {% set emprows = (emprows.push([{ text: emp.id }, {text: emp.name }, {text: emp.address}, 
+                        {text: emp.nin}, {text: emp.bank_num}, {text: emp.salary}, {text: emp.dept}]), emprows) %}
+                        
+
+    {% endfor %} 
+
+    {{govukTable({ 
+        head: [ { text: "ID" },{ text: "Name" },{ text: "Address" }, 
+                { text: "NIN" },{ text: "Bank" },{ text: "Salary"}, { text: "Department"} ], 
+        rows: emprows }) 
+    }} 
+{% else %}
+There are no employees.
+{% endif %}
+
+{% endblock %}

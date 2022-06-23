@@ -1,0 +1,7 @@
+{ 
+    "connectionLimit": 10, 
+    "host":     "academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com", 
+    "user":     "ZuzannaM", 
+    "password": "112358z", 
+    "database": "world_ZuzannaM" 
+}
