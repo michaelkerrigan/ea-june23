@@ -88,7 +88,12 @@ router.get('/create-user', function (req, res) {
 
 
 router.get('/add-sales-employee', function (req, res) {
-  res.render('newSalesEmployeeForm');
+    if (req.cookies.Role === "HR"){
+        res.render('newSalesEmployeeForm');
+    } else {
+        res.locals.errormessage = "Please sign in to a HR account";
+        res.render("login");
+    }
 });
 
 router.post('/add-sales-employee', async (req, res) => {
