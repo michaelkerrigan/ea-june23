@@ -3,6 +3,9 @@ const router = express.Router()
 const citydata = require('./citydata.js')
 const employeeData = require('./employeeData.js')
 const userData = require('./userData.js')
+const cookieParser = require('cookie-parser')
+
+router.use(cookieParser());
 
 // Add your routes here - above the module.exports line
 
@@ -54,17 +57,23 @@ router.get('/employees', async (req, res) => {
 });
 
 router.get('/create-employee', function (req, res) {
-  res.render('newEmployeeForm'); 
+     if (req.cookies.Role === "HR"){
+    res.render('newEmployeeForm');
+    } else {
+        res.locals.errormessage = "Please sign in to a HR account";
+        res.render("login");
+    }
 });
 
 router.post('/create-employee', async (req, res) => {
-  try {
-    await employeeData.addEmployee(req.body);
-    res.redirect('employees');
-  } catch (e) {
-    res.locals.errormessage = "Could not create employee";
-    res.render('newEmployeeForm', req.body)
-  }
+    try {
+        await employeeData.addEmployee(req.body);
+        res.redirect('employees');
+      } catch (e) {
+        res.locals.errormessage = "Could not create employee";
+        res.render('newEmployeeForm', req.body)
+      }
+
 });
 
 router.get('/create-user', function (req, res) {
@@ -86,6 +95,21 @@ router.get('/login-user', function (req, res) {
   res.render('login'); 
 });
 
+router.get('/home', function (req, res) {
+  res.render('home');
+});
+
+//router.get('/setcookie', (req, res) => {
+//    res.cookie('Role', req.body);
+//    res.send('Cookie saved');
+//    });
+//
+//router.get('/getcookie', (req, res) => {
+//    //show the saved cookies
+//    console.log(req.cookies)
+//    res.send(req.cookies);
+//});
+
 router.post('/login-user', async (req, res) => {
   try {
     result = await userData.verifyUser(req.body);
@@ -94,8 +118,12 @@ router.post('/login-user', async (req, res) => {
 
       // STORE COOKIE SESSION DATA HERE (about user role)
       //result.role
+      res.cookie('Role', result.role)
 
-      res.render('employeesView', { employees: await employeeData.getEmployees() });
+      console.log("COOKIES:")
+      console.log(req.cookies.Role)
+
+      res.render('home', { employees: await employeeData.getEmployees() });
     } else {
       res.locals.errormessage = "Incorrect username or password";
       res.render('login', req.body)
