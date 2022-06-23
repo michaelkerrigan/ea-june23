@@ -99,7 +99,7 @@ router.get('/add-sales-employee', function (req, res) {
 router.post('/add-sales-employee', async (req, res) => {
   try {
     await employeeData.addSalesEmployee(req.body);
-    res.render('newSalesEmployeeForm', req.body)
+    res.redirect("employees");
   } catch (e) {
     console.log(e)
     res.locals.errormessage = "Could not create user";
