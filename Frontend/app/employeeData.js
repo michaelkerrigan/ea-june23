@@ -19,6 +19,7 @@ exports.getEmployees = async () => {
     return employees;
 }
 
+
 exports.addEmployee = async (newEmployee) => {
     let results = await axios.post('http://localhost:8080/api/employee', newEmployee)
     //console.log(results.data);
