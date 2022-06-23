@@ -38,7 +38,7 @@ public class EmployeesDB {
                                 + "user, password, and host properties.");
 
             conn = DriverManager.getConnection("jdbc:mysql://"
-                    + host + "/Project_OrlaghM?allowPublicKeyRetrieval=true&useSSL=false", user, password);
+                    + host + "/June23_ZuzannaM?allowPublicKeyRetrieval=true&useSSL=false", user, password);
             return conn;
 
         } catch (Exception e) {
