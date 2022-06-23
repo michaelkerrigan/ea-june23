@@ -71,6 +71,22 @@ router.get('/create-user', function (req, res) {
   res.render('newUserForm'); 
 });
 
+
+router.get('/add-sales-employee', function (req, res) {
+  res.render('newSalesEmployeeForm');
+});
+
+router.post('/add-sales-employee', async (req, res) => {
+  try {
+    await employeeData.addSalesEmployee(req.body);
+    res.render('newSalesEmployeeForm', req.body)
+  } catch (e) {
+    console.log(e)
+    res.locals.errormessage = "Could not create user";
+    res.render('newSalesEmployeeForm', req.body)
+  }
+});
+
 router.post('/create-user', async (req, res) => {
   try {
     await userData.addUser(req.body);

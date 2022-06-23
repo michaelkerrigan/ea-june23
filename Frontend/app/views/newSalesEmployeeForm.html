@@ -1,0 +1,92 @@
+{% extends "layout_unbranded.html" %}
+{% block pageTitle %}
+Add an Employee
+{% endblock %}
+
+{% block content %}
+
+<h2>Add a Sales Employee</h2>
+{% if errormessage %}
+<div class="govuk-error-message">{{ errormessage }}</div>
+{% endif %}
+
+<div class="govuk-form-group">
+  <form class="form" action="/add-sales-employee" method="post">
+
+    {% from "govuk/components/input/macro.njk" import govukInput %}
+
+    {{ govukInput({
+    label: {
+    text: "Name",
+    classes: "govuk-label--s",
+    isPageHeading: false
+    },
+    id: "name",
+    name: "name"
+    }) }}
+
+    {{ govukInput({
+    label: {
+    text: "Address",
+    classes: "govuk-label--s",
+    isPageHeading: false
+    },
+    id: "address",
+    name: "address"
+    }) }}
+
+    {{ govukInput({
+    label: {
+    text: "NIN",
+    classes: "govuk-label--s",
+    isPageHeading: false
+    },
+    id: "nin",
+    name: "nin"
+    }) }}
+
+    {{ govukInput({
+    label: {
+    text: "Bank Number",
+    classes: "govuk-label--s",
+    isPageHeading: false
+    },
+    id: "bank_num",
+    name: "bank_num"
+    }) }}
+
+    {{ govukInput({
+    label: {
+    text: "Salary",
+    classes: "govuk-label--s",
+    isPageHeading: false
+    },
+    id: "salary",
+    name: "salary"
+    }) }}
+
+    {{ govukInput({
+    label: {
+    text: "Commission Rate",
+    classes: "govuk-label--s",
+    isPageHeading: false
+    },
+    id: "commRate",
+    name: "commRate"
+    }) }}
+
+    {{ govukInput({
+    label: {
+    text: "Total Sales",
+    classes: "govuk-label--s",
+    isPageHeading: false },
+    id: "salesTotal",
+    name: "salesTotal"
+    }) }}
+
+    <br>
+    <button class="govuk-button" data-module="govuk-button">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
