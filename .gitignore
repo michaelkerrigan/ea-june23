@@ -5,4 +5,5 @@
 .idea
 API/target/
 Frontend/docs/
+API/employeesdb.properties
 
