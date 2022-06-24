@@ -3,22 +3,12 @@ package com.kainos.ea.resources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Base64;
-
 public class User {
 
     // VARIABLES
     private String username;
     private String password;
     private String role;
-
-    // CONSTRUCTOR
-//    public User(String username, String password, String role) {
-//        this.username = username;
-//        this.password = password;
-//        this.role = role;
-//    }
-
     // GETTER AND SETTERS
     public String getUsername() {
         return username;

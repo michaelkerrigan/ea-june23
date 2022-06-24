@@ -3,10 +3,6 @@ package com.kainos.ea.resources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Base64;
-
-import javax.ws.rs.GET;
-
 public class Employee {
 
     // CONSTRUCTORS
@@ -105,14 +101,10 @@ public class Employee {
         this.setBank_num(bank_num);
         this.setSalary(salary);
     }
-
-    // OTHER METHODS
-
     public float calcPay(){
         double pay = Math.round((salary/12) * 100.0) / 100.0;
         return (float)pay;
     }
-
 
     public String toString(){
         return "Employee: "
@@ -122,7 +114,4 @@ public class Employee {
                 + this.getNin() + ", "
                 + this.getBank_num();
     }
-
-
-
 }

@@ -33,7 +33,6 @@ public class trueApplication extends Application<trueConfiguration> {
     public void run(final trueConfiguration configuration,
                     final Environment environment) {
         environment.jersey().register(new WebService());
-        // TODO: implement application
     }
 
 

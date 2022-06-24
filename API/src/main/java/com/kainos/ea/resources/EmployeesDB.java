@@ -187,9 +187,7 @@ public class EmployeesDB {
         if (affectedRows2 == 0) {
             throw new SQLException("Creating sales user failed, no rows affected.");
         }
-
         return empid;
-
     }
 
     public int insertUser(User user) throws SQLException {
@@ -214,7 +212,6 @@ public class EmployeesDB {
                 userNo = rs.getInt(1);
             }
         }
-
         return userNo;
     }
 
@@ -240,7 +237,4 @@ public class EmployeesDB {
         };
         return null;
     }
-
-
-
 }

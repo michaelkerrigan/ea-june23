@@ -19,34 +19,6 @@ function wrapDB(dbconfig) {
     }
 }
 
-// exports.getCitiesInCountry = async (countrycode) => { 
-//     let cities = []
-//     try {  
-//         const cityResponse = await axios.post('https://countriesnow.space/api/v0.1/countries/population/cities', {"country": countrycode})
-//         for (let data of cityResponse.data.data) {
-//             cities.push(data)
-//         }
-//       } catch (e) {
-//          return new Error('Could not get cities')
-//       }
-//       return cities;
-//   }
-
-// exports.getCities = async () => { 
-//     let cities = []  
-//       try {  
-//         const cityResponse = await axios.get('https://countriesnow.space/api/v0.1/countries/population/cities')
-//         for (let data of cityResponse.data.data) {
-//             cities.push(data)
-//         }
-//       } catch (e) {
-//         console.log(e);
-//          return new Error('Could not get cities')
-//       }
-
-//       return cities;
-//   }
-
 getCitiesInCountry = async (countrycode) => {
     return await db.query(
         "SELECT id, name, countrycode, district, population"
