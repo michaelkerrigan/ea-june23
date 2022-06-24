@@ -7,6 +7,12 @@ public class SalesEmployee extends Employee {
     private float CommRate;
     private int SalesTotal;
 
+    public SalesEmployee(int employeeID, String name, String address, String nin, float salary, String bankAccount, String department, float commissionRate, int salesTotal) {
+        super(employeeID,name, address, nin, salary, bankAccount, department);
+        this.CommRate = commissionRate;
+        this.SalesTotal = salesTotal;
+    }
+
     public float getCommRate() {
         return CommRate;
     }

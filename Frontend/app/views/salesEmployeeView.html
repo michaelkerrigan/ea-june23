@@ -12,18 +12,18 @@ List of Sales Employees
 {% for emp in employees | sort(attribute='id') %}
 
 {% set emprows = (emprows.push([{ text: emp.id }, {text: emp.name }, {text: emp.address},
-{text: emp.nin}, {text: emp.bank_num}, {text: emp.salary}, {text: emp.dept}, {text: emp.commRate}, {text: emp.salesTotal}]), emprows) %}
+{text: emp.nin}, {text: emp.bank_num}, {text: emp.salary}, {text: emp.commRate}, {text: emp.salesTotal}]), emprows) %}
 
 
 {% endfor %}
 
 {{govukTable({
 head: [ { text: "ID" },{ text: "Name" },{ text: "Address" },
-{ text: "NIN" },{ text: "Bank" },{ text: "Salary"}, { text: "Department"}, { text: "Commission Rate"}, { text: "Total Sales"} ],
+{ text: "NIN" },{ text: "Bank" },{ text: "Salary"}, { text: "Commission Rate"}, { text: "Total Sales"} ],
 rows: emprows })
 }}
 {% else %}
-There are no employees.
+There are no sales employees.
 {% endif %}
 
 {% endblock %}

@@ -38,6 +38,29 @@ public class WebService {
         }
     }
 
+    @GET
+    @Path("/sales-employees")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<SalesEmployee> getSalesEmployees()throws SQLException {
+        try {
+            return EmployeesDB.getSalesEmployees();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+//    @GET
+//    @Path("/get-pay")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List getPay()throws SQLException {
+//        try {
+//
+//            return EmployeesDB.getPay();
+//        } catch (SQLException e) {
+//            return null;
+//        }
+//    }
+
 
     @GET
     @Path("/employees/{empid}")

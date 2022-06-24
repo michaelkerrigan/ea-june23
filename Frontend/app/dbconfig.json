@@ -1,7 +1,7 @@
 { 
     "connectionLimit": 10, 
     "host":     "academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com", 
-    "user":     "ConorG",
-    "password": "SQLPass212!!",
+    "user":     "ZuzannaM",
+    "password": "112358z",
     "database": "June23_ZuzannaM"
 }

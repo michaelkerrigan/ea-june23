@@ -73,6 +73,33 @@ public class EmployeesDB {
         return employees;
     }
 
+    public static List<SalesEmployee> getSalesEmployees() throws SQLException {
+        Connection c = getConnection();
+
+        Statement st = c.createStatement();
+        ResultSet rs = st.executeQuery(
+                "SELECT * FROM Sales_Employee left join Employee on Employee.EmployeeID=Sales_Employee.SalesID;");
+
+        List<SalesEmployee> employees = new ArrayList<>();
+
+        while (rs.next()) {
+            SalesEmployee employee = new SalesEmployee(
+                    rs.getInt("EmployeeID"),
+                    rs.getString("Name"),
+                    rs.getString("Address"),
+                    rs.getString("NIN"),
+                    rs.getFloat("Salary"),
+                    rs.getString("BankAccount"),
+                    rs.getString("Department"),
+                    rs.getFloat("CommissionRate"),
+                    rs.getInt("SalesTotal")
+            );
+
+            employees.add(employee);
+        }
+        return employees;
+    }
+
     public static Employee getEmployeeByID(int empid) throws SQLException {
         Connection c = getConnection();
 
